@@ -4,9 +4,11 @@ filetype off
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'hashivim/vim-terraform'
+Plugin 'JamshedVesuna/vim-markdown-preview'
 call vundle#end()
 
 syntax on
@@ -19,10 +21,12 @@ set number
 let g:NERDTreeNodeDelimiter = "\u00a0"
 map <C-n> :NERDTreeToggle<CR>
 
+let vim_markdown_preview_github=1
 
-call plug#begin()
+call plug#begin('~/.vim/plugged')
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'SirVer/ultisnips'
+Plug 'psf/black',  { 'tag': '19.10b0' }
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -37,6 +41,9 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_generate_tags = 1
 
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+autocmd BufWritePre ~/code/Patreon/devx/*.py execute ':Black'
+
+let g:black_linelength = 120
 
 augroup go
   " :GoBuild and :GoTestCompile
@@ -71,3 +78,9 @@ function! s:build_go_files()
   endif
 endfunction  
 
+" terraform
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
+let g:terraform_fold_sections=1
+
+au BufRead * normal zR
